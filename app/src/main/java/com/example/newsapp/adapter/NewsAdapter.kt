@@ -1,12 +1,12 @@
 package com.example.newsapp.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.newsapp.R
 import com.example.newsapp.databinding.ItemArticlePreviewBinding
 import com.example.newsapp.model.Article
 
@@ -14,7 +14,7 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     inner class ArticleViewHolder(private var binding: ItemArticlePreviewBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(article: Article){
-            Glide.with(binding.root).load(article.urlToImage).into(binding.ivArticleImage)
+            Glide.with(itemView).load(article.urlToImage).placeholder(R.drawable.ic_baseline_newspaper_24).into(binding.ivArticleImage)
             binding.tvTitle.text = article.title
             binding.tvDescription.text = article.description
             binding.tvPublishedAt.text = article.publishedAt
@@ -43,13 +43,13 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
     }
 
     val differ = AsyncListDiffer(this, differCallback)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         return ArticleViewHolder(ItemArticlePreviewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]
-
         holder.bind(article)
     }
 
